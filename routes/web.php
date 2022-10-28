@@ -41,8 +41,7 @@ Route::group(['middleware' => ['guest', 'web']], function () {
     Route::post('login', [SessionController::class, 'store']);
 });
 
-Route::group(['middleware' => ['auth', 'web']], function () {
-    Route::post('/logout', [SessionController::class, 'destroy']);
+Route::group(['middleware' => ['auth', 'admin', 'web']], function () {
 
     Route::get('/addUser', [UserController::class, 'create']);
     Route::post('/addUser', [UserController::class, 'store']);
@@ -57,28 +56,32 @@ Route::group(['middleware' => ['auth', 'web']], function () {
     Route::post('/addNews', [NewsController::class, 'store']);
     Route::get('/editNews/{news}', [NewsController::class, 'edit']);
     Route::patch('/updateNews/{news}', [NewsController::class, 'update']);
+});
 
+Route::group(['middleware' => ['auth', 'web']], function () {
+    Route::post('/logout', [SessionController::class, 'destroy']);
+    
     Route::get('/subscribe', [UserController::class, 'showSubscribe']);
     Route::post('/subscribe/{user}', [UserController::class, 'storeSubscribe']);
 });
 
-Route::get('/test_mail', function () {
-    $email = new \SendGrid\Mail\Mail();
-    $email->setFrom("vladanrstcmet@gmail.com", "Vladan Ristic");
-    $email->setSubject("Sending with Twilio SendGrid is Fun");
-    $email->addTo("lazarkadic@gmail.com", "Laza Kamikaza");
-    $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-    $email->addContent(
-        "text/html",
-        "<strong>and easy to do anywhere, even with PHP</strong>"
-    );
-    $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
-    try {
-        $response = $sendgrid->send($email);
-        print $response->statusCode() . "\n";
-        print_r($response->headers());
-        print $response->body() . "\n";
-    } catch (Exception $e) {
-        echo 'Caught exception: ' . $e->getMessage() . "\n";
-    }
-});
+// Route::get('/test_mail', function () {
+//     $email = new \SendGrid\Mail\Mail();
+//     $email->setFrom("vladanrstcmet@gmail.com", "Vladan Ristic");
+//     $email->setSubject("Sending with Twilio SendGrid is Fun");
+//     $email->addTo("lazarkadic@gmail.com", "Laza Kamikaza");
+//     $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
+//     $email->addContent(
+//         "text/html",
+//         "<strong>and easy to do anywhere, even with PHP</strong>"
+//     );
+//     $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
+//     try {
+//         $response = $sendgrid->send($email);
+//         print $response->statusCode() . "\n";
+//         print_r($response->headers());
+//         print $response->body() . "\n";
+//     } catch (Exception $e) {
+//         echo 'Caught exception: ' . $e->getMessage() . "\n";
+//     }
+// });
