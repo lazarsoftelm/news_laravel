@@ -29,7 +29,7 @@
         @enderror
         <br />
 
-        <label for="password">Role</label>
+        <label for="role">Role</label>
         <select class="border border-gray-200 p-1 m-1 rounded" name="role" id="role">
             <option value="user">user</option>
             <option value="admin">admin</option>

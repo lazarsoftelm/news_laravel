@@ -32,9 +32,8 @@ class UserController extends Controller
             'last_name' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'min:7', Rule::unique('users', 'password')],
+            'role' => ['required', Rule::in(['user', 'admin'])]
         ]);
-
-        $attributes['role'] = 'user';
 
         //ddd($attributes);
         $user = User::create($attributes);
