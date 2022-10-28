@@ -39,6 +39,12 @@ Route::get('/news/{news}', [NewsController::class, 'show']);
 Route::group(['middleware' => ['guest', 'web']], function () {
     Route::get('login', [SessionController::class, 'create'])->name('login');
     Route::post('login', [SessionController::class, 'store']);
+
+    // Da ne pravim novi Controller samo za dve funkcije
+    Route::get('register', function () {
+        return view('register.create');
+    });
+    Route::post('register', [UserController::class, 'register']);
 });
 
 Route::group(['middleware' => ['auth', 'admin', 'web']], function () {
@@ -60,7 +66,7 @@ Route::group(['middleware' => ['auth', 'admin', 'web']], function () {
 
 Route::group(['middleware' => ['auth', 'web']], function () {
     Route::post('/logout', [SessionController::class, 'destroy']);
-    
+
     Route::get('/subscribe', [UserController::class, 'showSubscribe']);
     Route::post('/subscribe/{user}', [UserController::class, 'storeSubscribe']);
 });

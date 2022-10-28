@@ -44,6 +44,23 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Your account has been created.');
     }
 
+    public function register()
+    {
+        $attributes = request()->validate([
+            'first_name' => ['required', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
+            'password' => ['required', 'min:7', Rule::unique('users', 'password')],
+        ]);
+        $attributes['role'] = 'user';
+        //ddd($attributes);
+        $user = User::create($attributes);
+
+        auth()->login($user);
+
+        return redirect('/')->with('success', 'Your account has been created.');
+    }
+
     public function showSubscribe()
     {
         //ddd(Categorie::all());
