@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTagRequest;
 use App\Models\Tags;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -23,15 +24,9 @@ class TagController extends Controller
         return view('tags.create');
     }
 
-    public function store()
+    public function store(StoreTagRequest $request)
     {
-        //ddd(request()->all());
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255', 'min:3', Rule::unique('tags', 'name')],
-        ]);
-
-        //ddd($attributes);
-        Tags::create($attributes);
+        Tags::create($request->validated());
 
         return redirect('/')->with('success', 'Your tag has been created.');
     }

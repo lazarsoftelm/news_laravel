@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -23,15 +24,9 @@ class CategorieController extends Controller
         return view('categories.create');
     }
 
-    public function store()
-    {
-        //ddd(request()->all());
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255', 'min:3', Rule::unique('categories', 'name')],
-        ]);
-
-        //ddd($attributes);
-        Categorie::create($attributes);
+    public function store(StoreCategoryRequest $request)
+    {   
+        Categorie::create($request->validated());
 
         return redirect('/')->with('success', 'Your categorie has been created.');
     }

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\StoreSubscriberRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\Categorie;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -24,19 +28,9 @@ class UserController extends Controller
         return view('user.create');
     }
 
-    public function store()
+    public function store(StoreUserRequest $request)
     {
-        //ddd(request()->all());
-        $attributes = request()->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'min:7', Rule::unique('users', 'password')],
-            'role' => ['required', Rule::in(['user', 'admin'])]
-        ]);
-
-        //ddd($attributes);
-        $user = User::create($attributes);
+        $user = User::create($request->validated());
 
         // Ako hoces da se i prijavis odmah kao novokreirani korisnik
         //auth()->login($user);
@@ -44,17 +38,11 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Your account has been created.');
     }
 
-    public function register()
+    public function register(RegisterUserRequest $request)
     {
-        $attributes = request()->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'min:7', Rule::unique('users', 'password')],
-        ]);
-        $attributes['role'] = 'user';
-        //ddd($attributes);
-        $user = User::create($attributes);
+        $data = $request->validated();
+        $data['role'] = 'user';
+        $user = User::create($data);
 
         auth()->login($user);
 
@@ -63,27 +51,24 @@ class UserController extends Controller
 
     public function showSubscribe()
     {
-        //ddd(Categorie::all());
-        $categories = auth()->user()->categories;
-        $categories = $categories->toArray();
+        $categories = Auth::user()->subscribedCategories;
         $categoriesArr = [];
-        foreach ($categories as $cat) {
-            array_push($categoriesArr, $cat['id']);
-        }
+        $categories->map(function ($cat) use (&$categoriesArr) {
+            $categoriesArr[] = $cat->id;
+        });
         return view('user.subscribe', [
             'categories' => Categorie::all(),
             'userCategories' => $categoriesArr
         ]);
     }
 
-    public function storeSubscribe(User $user)
+    public function storeSubscribe(StoreSubscriberRequest $request, User $user)
     {
-        $attributes = request()->validate([
-            'values' => [Rule::exists('tags', 'id')]
-        ]);
-
-        $user->categories()->sync($attributes['values']);
-        // ddd($attributes['values']);
+        if ([] !== $request->safe()->only(['values'])) {
+            $user->subscribedCategories()->sync($request->safe()->only(['values'])['values']);
+        } else {
+            $user->subscribedCategories()->sync([]);
+        }
 
         return redirect('/')->with('success', 'You subscribed to new categories.');
     }

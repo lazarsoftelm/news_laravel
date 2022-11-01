@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
+use App\Http\Requests\StoreNewsRequest;
 use App\Models\Categorie;
 use App\Models\News;
 use App\Models\NewsTags;
 use App\Models\Tags;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +15,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        return view('news.index', ['news' => News::all()]);
+        return view('news.index', ['news' => News::paginate(5)]);
     }
 
     public function show(News $news)
@@ -27,55 +28,30 @@ class NewsController extends Controller
         return view('news.create', ['categories' => Categorie::all(), 'tags' => Tags::all()]);
     }
 
-    public function store()
+    public function store(StoreNewsRequest $request)
     {
-        $attributes = request()->validate([
-            'title' => ['required', 'max:255'],
-            'news_text' => ['required', 'max:255'],
-            'categorie_id' => ['required', Rule::exists('categories', 'id')],
-            'values' => [Rule::exists('tags', 'id')]
-        ]);
+        $news = News::create($request->safe()->except(['values']));
 
-        $news = News::create($attributes);
-
-        if ($attributes['values']) {
-            $news->tags()->attach($attributes['values']);
+        if ([] !== $request->safe()->only(['values'])) {
+            $news->tags()->attach($request->safe()->only(['values'])['values']);
         }
 
-        $newsCategorie = $news->categorie;
-        $subscribedUsers = $newsCategorie->users;
+        $subscribedUsers = $news->categorie()->first()->users()->get();
 
         $emails = [];
-        $names = [];
-        foreach ($subscribedUsers as $user) {
-            // array_push($emails, $user['email']);
-            // array_push($names, $user['first_name']);
+        $subscribedUsers->map(function ($user) use (&$emails) {
             $emails[$user['email']] = $user['first_name'] . " " . $user['last_name'];
-        }
+        });
 
-
-        //ddd($emails);
-        if ($emails != []) {
-            // ddd($emails);
-            $email = new \SendGrid\Mail\Mail();
-            $email->setFrom("vladanrstcmet@gmail.com", "Mr Vladan Ristic");
-            $email->setSubject("{$news['title']}");
-            $email->addTos($emails);
-            //$email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-            $email->addContent("text/html",
-            "<p>Postovani, </p><br />
+        if (count($emails) > 0) {
+            $link = getenv('LOCALHOST') . "/news/{$news['id']}";
+            Helper::email(
+                $news['title'],
+                $emails,
+                "<p>Postovani, </p><br />
             <strong>Postavljena je nova vest u kategoriji za koju ste se pretplatili.</strong><br />
-            <p>Vest mozete pogledati na sledecem <a href='http://127.0.0.1:8000/news/{$news['id']}'>linku</a></p>"
+            <p>Vest mozete pogledati na sledecem <a href={$link}>linku</a>.</p>"
             );
-            $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
-            try {
-                $response = $sendgrid->send($email);
-                print $response->statusCode() . "\n";
-                print_r($response->headers());
-                print $response->body() . "\n";
-            } catch (Exception $e) {
-                echo 'Caught exception: ' . $e->getMessage() . "\n";
-            }
         }
 
         return redirect('/')->with('success', 'Your news has been created.');
@@ -84,11 +60,10 @@ class NewsController extends Controller
     public function edit(News $news)
     {
         $tags = $news->tags;
-        $tags = $tags->toArray();
         $tagsArr = [];
-        foreach ($tags as $tag) {
-            array_push($tagsArr, $tag['id']);
-        }
+        $tags->map(function($tag) use(&$tagsArr){
+            $tagsArr[] = $tag->id;
+        });
 
         return view('news.edit', [
             'news' => $news,
@@ -98,18 +73,15 @@ class NewsController extends Controller
         ]);
     }
 
-    public function update(News $news)
+    public function update(StoreNewsRequest $request, News $news)
     {
-        $attributes = request()->validate([
-            'title' => ['required', 'max:255'],
-            'news_text' => ['required', 'max:255'],
-            'categorie_id' => ['required', Rule::exists('categories', 'id')],
-            'values' => [Rule::exists('tags', 'id')]
-        ]);
+        $news->update($request->safe()->except(['values']));
 
-        $news->update($attributes);
-        $news->tags()->sync($attributes['values']);
-
+        if ([] !== $request->safe()->only(['values'])) {
+            $news->tags()->sync($request->safe()->only(['values'])['values']);
+        } else {
+            $news->tags()->sync([]);
+        }
 
         return redirect('/')->with('success', 'Your news has been updated.');
     }
