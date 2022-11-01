@@ -64,11 +64,10 @@ class UserController extends Controller
 
     public function storeSubscribe(StoreSubscriberRequest $request, User $user)
     {
-        if ([] !== $request->safe()->only(['values'])) {
-            $user->subscribedCategories()->sync($request->safe()->only(['values'])['values']);
-        } else {
-            $user->subscribedCategories()->sync([]);
-        }
+
+        $request->safe()->only(['values']) 
+        ? $user->subscribedCategories()->sync($request->safe()->only(['values'])['values']) 
+        : $user->subscribedCategories()->sync([]);
 
         return redirect('/')->with('success', 'You subscribed to new categories.');
     }

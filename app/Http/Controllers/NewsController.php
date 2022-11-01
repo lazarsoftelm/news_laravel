@@ -13,6 +13,12 @@ use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
 {
+
+    // public function __construct(Interface $faasdasd)
+    // {
+        
+    // }
+
     public function index()
     {
         return view('news.index', ['news' => News::paginate(5)]);

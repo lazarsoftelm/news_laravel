@@ -7,12 +7,14 @@ use SendGrid\Mail\Mail;
 
 class Helper
 {
-    public static function email(string $mailTitle, array $sendTos, string $mailText)
+    public static function email(string $mailTitle, array $sendTos, string $mailText, array $ccs = [])
     {
+
         $email = new Mail();
         $email->setFrom("vladanrstcmet@gmail.com", "Mr Vladan Ristic");
         $email->setSubject($mailTitle);
         $email->addTos($sendTos);
+        $email->addCcs($ccs);
         $email->addContent("text/html", $mailText);
         $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
         try {

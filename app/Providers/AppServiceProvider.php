@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // $bindings = [
+        //     InterfaceClass => InterfaceImplClass,
+        // ]
     }
 
     /**
