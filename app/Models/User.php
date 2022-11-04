@@ -46,6 +46,7 @@ class User extends Authenticatable
 
     public function subscribedCategories()
     {
+        //Log::info("q123123");
         return $this->belongsToMany(Categorie::class, 'categories_users')->withTimestamps();
     }
 

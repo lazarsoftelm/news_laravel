@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         // $bindings = [
         //     InterfaceClass => InterfaceImplClass,
         // ]
+
+        // Da li je bolje registrovati jedan ServiceProvider kroz drugi ServiceProvider?
+        // Ili je bolje direktno ga dodati u config/app.php u "providers" deo?
+        $this->app->register(RepositoryServiceProvider::class);
     }
 
     /**
