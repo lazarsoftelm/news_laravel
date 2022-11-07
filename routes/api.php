@@ -33,3 +33,5 @@ Route::post('tags', [TagApiController::class, 'store']);
 Route::get('categories', [CategoryApiController::class, 'index']);
 Route::get('categories/{id}', [CategoryApiController::class, 'show']);
 Route::post('category', [CategoryApiController::class, 'store']);
+
+// komentar za passport
