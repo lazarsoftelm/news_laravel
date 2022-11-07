@@ -34,4 +34,10 @@ Route::get('categories', [CategoryApiController::class, 'index']);
 Route::get('categories/{id}', [CategoryApiController::class, 'show']);
 Route::post('category', [CategoryApiController::class, 'store']);
 
+Route::post('login', [UserApiController::class, 'login']);
+
+Route::group(['middleware' => ['auth:api', 'admin']], function () {
+    Route::get('authUser', [UserApiController::class, 'index']);
+    
+});
 // komentar za passport

@@ -9,6 +9,7 @@ use App\Models\News;
 use App\Models\NewsTags;
 use App\Models\Tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
@@ -81,6 +82,11 @@ class NewsController extends Controller
 
     public function update(StoreNewsRequest $request, News $news)
     {
+        // Ako je korisnik subscribe-ovan na kategoriju kojoj vest pripada, onda moze da je edituje.
+        // if (! Gate::allows('update-news', $news)) {
+        //     abort(403, 'You are not subscribed to this category.');
+        // }
+
         $news->update($request->safe()->except(['values']));
 
         if ([] !== $request->safe()->only(['values'])) {

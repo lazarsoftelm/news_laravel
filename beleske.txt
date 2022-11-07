@@ -8,3 +8,9 @@ Schema::create('news_tags', function (Blueprint $table) {
 
             $table->timestamps();
         });
+
+Client ID: 1
+Client secret: hCtBAnPeTeBFnlNE6bTkWUgrhn27qVAuKEdfI2j5
+
+Client ID: 2
+Client secret: 4HI9NMtZuzOpUQNozUPD2cMtC9hDfBnlaLOLGeoP
