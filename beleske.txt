@@ -8,3 +8,4 @@ Schema::create('news_tags', function (Blueprint $table) {
 
             $table->timestamps();
         });
+        feature 1 linija
