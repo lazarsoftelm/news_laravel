@@ -17,7 +17,7 @@ class NewsController extends Controller
 
     // public function __construct(Interface $faasdasd)
     // {
-        
+
     // }
 
     public function index()
@@ -68,7 +68,7 @@ class NewsController extends Controller
     {
         $tags = $news->tags;
         $tagsArr = [];
-        $tags->map(function($tag) use(&$tagsArr){
+        $tags->map(function ($tag) use (&$tagsArr) {
             $tagsArr[] = $tag->id;
         });
 
@@ -83,9 +83,14 @@ class NewsController extends Controller
     public function update(StoreNewsRequest $request, News $news)
     {
         // Ako je korisnik subscribe-ovan na kategoriju kojoj vest pripada, onda moze da je edituje.
-        // if (! Gate::allows('update-news', $news)) {
+        // if (!Gate::allows('update-news', $news)) {
         //     abort(403, 'You are not subscribed to this category.');
         // }
+
+        if (!Gate::allows('update', $news)) {
+            abort(403, 'You are not subscribed to this category, from Policy.');
+        }
+
 
         $news->update($request->safe()->except(['values']));
 
