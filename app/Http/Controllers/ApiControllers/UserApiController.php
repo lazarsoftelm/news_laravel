@@ -31,6 +31,7 @@ class UserApiController extends Controller
         return response()->json($this->userRepository->create($request->all()), 201);
     }
 
+    // Sanctum token
     public function createToken(Request $request)
     {
         $login = $request->validate([
