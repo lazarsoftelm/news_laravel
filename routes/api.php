@@ -40,4 +40,4 @@ Route::group(['middleware' => ['auth:api', 'admin']], function () {
     Route::get('authUser', [UserApiController::class, 'index']);
     
 });
-// komentar za passport
+// komentar za passport!
