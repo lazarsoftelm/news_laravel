@@ -12,7 +12,8 @@ class News extends Model
     protected $fillable = [
         'title',
         'news_text',
-        'categorie_id'
+        'categorie_id',
+        'slug'
     ];
 
     public function categorie()
@@ -23,5 +24,15 @@ class News extends Model
     public function tags()
     {
         return $this->belongsToMany(Tags::class)->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->belongsToMany(Comments::class)->withTimestamps();
+    }
+
+    public function savedByUsers()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

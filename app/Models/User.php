@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'image'
     ];
 
     /**
@@ -48,6 +49,16 @@ class User extends Authenticatable
     {
         //Log::info("q123123");
         return $this->belongsToMany(Categorie::class, 'categories_users')->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->belongsToMany(Comments::class, 'comments')->withTimestamps();
+    }
+
+    public function savedNews()
+    {
+        return $this->belongsToMany(News::class, 'saved_news')->withTimestamps();
     }
 
     public function setPasswordAttribute($password)
