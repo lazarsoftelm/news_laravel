@@ -15,8 +15,18 @@ class Reactions extends Model
         'emoji_id'
     ];
 
-    // public function reactedOnNews()
-    // {
-    //     return $this->belongsToMany(News::class, 'news_reaction')->withTimestamps();
-    // }
+    public function news()
+    {
+        return $this->belongsTo(News::class, 'news')->withTimestamps();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users')->withTimestamps();
+    }
+
+    public function emoji()
+    {
+        return $this->belongsTo(Emoji::class, 'emoji')->withTimestamps();
+    }
 }

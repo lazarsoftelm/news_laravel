@@ -36,19 +36,4 @@ class NewsApiController extends Controller
 
         return response()->json($this->newsRepository->create($request->all()), 201);
     }
-
-    public function addReaction(Request $request)
-    {
-        $request->validate([
-            'user_id' => ['required', Rule::exists('users', 'id')],
-            'news_id' => ['required', Rule::exists('news', 'id')],
-            'reactions_id' => ['required', Rule::exists('reactions', 'id')]
-        ]);
-
-        $user = $this->userRepository->findById($request['user_id']);
-
-        // Dodavanje u Reactions tabelu
-
-        return response()->json($this->newsRepository->create($request->all()), 201);
-    }
 }

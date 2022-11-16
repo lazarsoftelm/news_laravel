@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ApiControllers\CategoryApiController;
+use App\Http\Controllers\ApiControllers\CommentApiController;
+use App\Http\Controllers\ApiControllers\EmojiApiController;
 use App\Http\Controllers\ApiControllers\NewsApiController;
 use App\Http\Controllers\ApiControllers\ReactionApiController;
 use App\Http\Controllers\ApiControllers\TagApiController;
@@ -46,6 +48,12 @@ Route::post('news/addReaction', [NewsApiController::class, 'addReaction']);
 
 Route::get('reactions', [ReactionApiController::class, 'index']);
 Route::post('reactions', [ReactionApiController::class, 'store']);
+
+Route::get('emoji', [EmojiApiController::class, 'index']);
+Route::post('emoji', [EmojiApiController::class, 'store']);
+
+Route::get('comment', [CommentApiController::class, 'index']);
+Route::post('comment', [CommentApiController::class, 'store']);
 
 Route::post('/tokens/create', [UserApiController::class, 'createToken']);
 

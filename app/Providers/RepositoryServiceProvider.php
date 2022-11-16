@@ -3,13 +3,17 @@
 namespace App\Providers;
 
 use App\Repository\CategoryRepositoryInterface;
+use App\Repository\CommentRepositoryInterface;
 use App\Repository\Eloquent\BaseRepository;
 use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Eloquent\CommentRepository;
+use App\Repository\Eloquent\EmojiRepository;
 use App\Repository\Eloquent\NewsRepository;
 use App\Repository\Eloquent\ReactionRepository;
 use App\Repository\Eloquent\TagRepository;
 use App\Repository\Eloquent\UserRepository;
 use App\Repository\EloquentRepositoryInterface;
+use App\Repository\EmojiRepositoryInterface;
 use App\Repository\NewsRepositoryInterface;
 use App\Repository\ReactionRepositoryInterface;
 use App\Repository\TagRepositoryInterface;
@@ -32,6 +36,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(NewsRepositoryInterface::class, NewsRepository::class);
         $this->app->bind(ReactionRepositoryInterface::class, ReactionRepository::class);
+        $this->app->bind(EmojiRepositoryInterface::class, EmojiRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
     }
 
     /**

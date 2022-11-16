@@ -35,4 +35,9 @@ class News extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reactions::class, 'reactions')->withTimestamps();
+    }
 }

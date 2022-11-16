@@ -13,4 +13,9 @@ class Emoji extends Model
         'type',
         'short_name'
     ];
+
+    public function reactions()
+    {
+        return $this->hasMany(Reactions::class, 'reactions')->withTimestamps();
+    }
 }
