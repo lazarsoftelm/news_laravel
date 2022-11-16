@@ -10,11 +10,13 @@ class Reactions extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type'
+        'user_id',
+        'news_id',
+        'emoji_id'
     ];
 
-    public function reactedOnNews()
-    {
-        return $this->belongsToMany(News::class, 'news_reaction')->withTimestamps();
-    }
+    // public function reactedOnNews()
+    // {
+    //     return $this->belongsToMany(News::class, 'news_reaction')->withTimestamps();
+    // }
 }

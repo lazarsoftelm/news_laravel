@@ -8,5 +8,6 @@
             <span class="badge rounded-pill bg-success">{{ $tag->name; }}</span>
         @endforeach
     </p>
+    <p>&#128526;</p>
     <a href="/editNews/{{$news->id}}">Edit news</a>
 </x-layout>

@@ -28,10 +28,10 @@ class News extends Model
 
     public function comments()
     {
-        return $this->belongsToMany(Comments::class)->withTimestamps();
+        return $this->hasMany(Comments::class)->withTimestamps();
     }
 
-    public function savedByUsers()
+    public function savedByUser()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }

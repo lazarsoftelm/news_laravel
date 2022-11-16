@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiControllers\CategoryApiController;
 use App\Http\Controllers\ApiControllers\NewsApiController;
+use App\Http\Controllers\ApiControllers\ReactionApiController;
 use App\Http\Controllers\ApiControllers\TagApiController;
 use App\Http\Controllers\ApiControllers\UserApiController;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ Route::post('category', [CategoryApiController::class, 'store']);
 
 Route::get('news', [NewsApiController::class, 'index']);
 Route::post('news', [NewsApiController::class, 'store']);
+Route::post('news/addReaction', [NewsApiController::class, 'addReaction']);
+
+Route::get('reactions', [ReactionApiController::class, 'index']);
+Route::post('reactions', [ReactionApiController::class, 'store']);
 
 Route::post('/tokens/create', [UserApiController::class, 'createToken']);
 

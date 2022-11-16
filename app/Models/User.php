@@ -53,12 +53,17 @@ class User extends Authenticatable
 
     public function comments()
     {
-        return $this->belongsToMany(Comments::class, 'comments')->withTimestamps();
+        return $this->hasMany(Comments::class, 'comments')->withTimestamps();
     }
 
     public function savedNews()
     {
         return $this->belongsToMany(News::class, 'saved_news')->withTimestamps();
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reactions::class, 'reactions')->withTimestamps();
     }
 
     public function setPasswordAttribute($password)

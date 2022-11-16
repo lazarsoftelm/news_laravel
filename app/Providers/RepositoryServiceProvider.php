@@ -6,10 +6,12 @@ use App\Repository\CategoryRepositoryInterface;
 use App\Repository\Eloquent\BaseRepository;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\NewsRepository;
+use App\Repository\Eloquent\ReactionRepository;
 use App\Repository\Eloquent\TagRepository;
 use App\Repository\Eloquent\UserRepository;
 use App\Repository\EloquentRepositoryInterface;
 use App\Repository\NewsRepositoryInterface;
+use App\Repository\ReactionRepositoryInterface;
 use App\Repository\TagRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(NewsRepositoryInterface::class, NewsRepository::class);
+        $this->app->bind(ReactionRepositoryInterface::class, ReactionRepository::class);
     }
 
     /**
