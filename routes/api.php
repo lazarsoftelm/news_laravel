@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::apiResource
+
 Route::get('users', [UserApiController::class, 'index']);
 Route::get('users/{id}', [UserApiController::class, 'show']);
 Route::post('user', [UserApiController::class, 'store']);

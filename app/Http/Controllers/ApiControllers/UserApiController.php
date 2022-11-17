@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ApiControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreApiUserRequest;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,16 +35,9 @@ class UserApiController extends Controller
         return response()->json($this->userRepository->create($request->all()), 201);
     }
 
-    public function storeWithImage(Request $request)
+    public function storeWithImage(StoreApiUserRequest $request)
     {
-        $data = $request->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'min:7', Rule::unique('users', 'password')],
-            'role' => ['required', Rule::in(['user', 'admin'])],
-            // 'image' => ['required', 'mimes:png,jpg,jpeg']
-        ]);
+        $data = $request->validated();
 
         if ($request->hasfile('image')) {
             $file = $request->file('image');
@@ -58,17 +52,9 @@ class UserApiController extends Controller
         return response()->json(['response' => ['code' => '200', 'message' => 'User created successfully']]);
     }
 
-    public function update(Request $request)
+    public function update(StoreApiUserRequest $request)
     {
-        $data = $request->validate([
-            'first_name' => ['required', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'min:7', Rule::unique('users', 'password')],
-            'role' => ['required', Rule::in(['user', 'admin'])],
-            'id' => ['required'],
-            'image' => ['required', 'mimes:png,jpg,jpeg']
-        ]);
+        $data = $request->validated();
 
         if ($request->hasfile('image')) {
             $oldUser = $this->userRepository->findById($request['id']);
