@@ -21,10 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::get('users', [UserApiController::class, 'index']);
 Route::get('users/{id}', [UserApiController::class, 'show']);
 Route::post('user', [UserApiController::class, 'store']);
@@ -44,7 +40,6 @@ Route::post('category', [CategoryApiController::class, 'store']);
 
 Route::get('news', [NewsApiController::class, 'index']);
 Route::post('news', [NewsApiController::class, 'store']);
-Route::post('news/addReaction', [NewsApiController::class, 'addReaction']);
 
 Route::get('reactions', [ReactionApiController::class, 'index']);
 Route::post('reactions', [ReactionApiController::class, 'store']);

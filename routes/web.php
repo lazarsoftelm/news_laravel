@@ -5,7 +5,6 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
