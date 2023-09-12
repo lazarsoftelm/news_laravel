@@ -1,4 +1,4 @@
-name: Update Pull Request Name
+name: Update Pull Request Name v2
 
 on:
   pull_request:
