@@ -1,4 +1,4 @@
-name: Update Pull Request Name v3
+name: Update Pull Request Name
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ jobs:
     - name: Set Pull Request Name
       id: set-pr-name
       run: |
-        LAST_PR_NUMBER=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls?base=master" | jq -r 'map(select(.state == "closed")) | max_by(.number) | .number')
+        LAST_PR_NUMBER=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls?base=master" | jq -r 'map(select(.state == "closed" and .title | startswith("CXT-"))) | map(.title | ltrimstr("CXT-") | rtrimstr("/")) | map(. | tonumber) | max // 0')
         NEXT_PR_NUMBER=$((LAST_PR_NUMBER + 1))
         NEW_PR_NAME="CXT-$NEXT_PR_NUMBER/"
         echo "::set-output name=new_pr_name::$NEW_PR_NAME"
